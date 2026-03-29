@@ -9,9 +9,9 @@
 # os → allows execution of system commands (like adduser, passwd)
 # re → used for pattern matching (detecting comments in input file)
 # sys → used to read input from stdin (the redirected input file)
-import os
-import re
-import sys
+# import os
+# import re
+# import sys
 
 def main():
     # Loop through each line of input from the input file (stdin)
