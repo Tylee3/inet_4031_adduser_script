@@ -2,38 +2,42 @@
 
 ## Program Description
 
-This program helps automate the process of adding multiple users to a Linux system. Instead of manually entering commands for each new account, the script reads user information from an input file and creates the accounts automatically. This saves time, reduces mistakes, and makes the process more efficient when many users need to be added.
-
-Normally, a system administrator would need to use commands such as `adduser` to create a user account, `passwd` to set the user’s password, and `adduser <username> <group>` to place a user into a group. This script automates those ***SAME COMMANDS*** by building and running them from the data in the input file.
+This program automates the process of creating Linux user accounts from an input file. Normally, a system administrator would manually use commands such as `adduser` and `passwd` to create accounts and set passwords for each user. This script uses those same commands but executes them automatically by reading from a structured input file. This allows multiple users to be created quickly, consistently, and with less manual effort.
 
 ## Program User Operation
 
-This program works by reading lines from the `create-users.input` file through standard input. Each valid line contains the information needed to create one user account, set that user’s password, and assign the user to one or more groups. The script skips invalid lines and can also skip lines intentionally marked as comments. To use the program successfully, the user must prepare the input file correctly, make the Python script executable, and then run it with input redirection.
+This program reads user data from an input file and processes each line to create user accounts, set passwords, and assign group memberships.
 
 ### Input File Format
 
-Each line in the input file must contain five fields separated by colons in this format:
+Each line in the input file must follow this format:
 
-`username:password:last:first:groups`
+username:password:last:first:groups
 
-The first field is the username for the new account. The second field is the password that will be assigned to that user. The third and fourth fields are the user’s last name and first name, which are used to build the GECOS information stored with the account. The fifth field is a comma-separated list of groups the user should be added to.
+- `username` → the login name of the user  
+- `password` → the user’s password  
+- `last` → last name  
+- `first` → first name  
+- `groups` → comma-separated list of groups  
 
-If the user wants to skip a line in the input file, they should place a `#` character at the beginning of that line. The script recognizes that as a comment and skips it.
+If a line begins with `#`, it is treated as a comment and skipped.
 
-If the user does not want a new user added to any groups, they should place `-` in the groups field.
+If a user should not be added to any groups, use `-` in the groups field.
 
-### Command Excuction
+### Command Execution
 
-Before running the script, the user may need to make it executable with the following command:
+To run the program:
 
-`chmod +x create-users.py`
+sudo ./create-users.py < create-users.input
 
-The script can then be run with:
+The `<` symbol redirects the contents of the input file into the program as standard input.
 
-`./create-users.py < create-users.input`
+The script may need executable permissions:
 
-The `<` symbol redirects the contents of the input file into the script so the Python code can read each line through standard input.
+The `<` symbol redirects the contents of the input file into the program as standard input.
+
+The script may need executable permissions:
 
 ### "Dry Run"
 
-A dry run allows the user to test the script without actually making changes to the system. During a dry run, the commands that would normally create users, set passwords, and assign groups are printed to the screen instead of being executed. This helps the user confirm that the script is working correctly before running it for real. Once the dry run shows no errors, the command lines can be uncommented and the script can be run normally with `sudo`.
+A dry run allows the user to test the script without actually creating accounts. This is done by commenting out the `os.system(cmd)` lines and enabling `print(cmd)` instead. This will display the commands that would be executed without making any system changes.
